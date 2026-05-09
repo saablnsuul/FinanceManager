@@ -1,0 +1,38 @@
+
+    @if (statuses$ | async; as statuses) {
+      <div class="budget-list">
+        @for (status of statuses; track status.categoryId) {
+          @if (getCategoryName(status.categoryId); as catName) {
+            <div class="budget-item" [ngClass]="{ 'over-budget': status.isOverBudget }">
+              <div class="budget-header">
+                <span class="cat-name">{{ catName }}</span>
+                <span class="amounts">
+                  <span class="spent" [ngClass]="{ danger: status.isOverBudget }">
+                    ${{ status.spent | number:'1.0-0' }}
+                  </span>
+                  &nbsp;/&nbsp;${{ status.limit | number:'1.0-0' }}
+                </span>
+              </div>
+              <mat-progress-bar
+                [value]="status.percentage"
+                [color]="status.isOverBudget ? 'warn' : status.percentage > 80 ? 'accent' : 'primary'">
+              </mat-progress-bar>
+              <div class="budget-footer">
+                @if (status.isOverBudget) {
+                  <span class="warn-text">
+                    <mat-icon inline>warning</mat-icon>
+                    Over by ${{ (status.spent - status.limit) | number:'1.0-0' }}
+                  </span>
+                } @else {
+                  <span class="ok-text">${{ status.remaining | number:'1.0-0' }} remaining</span>
+                }
+                <span class="pct">{{ status.percentage | number:'1.0-0' }}%</span>
+              </div>
+            </div>
+          }
+        }
+        @if (statuses.length === 0) {
+          <p class="empty-state">No budgets set for this month.</p>
+        }
+      </div>
+    }

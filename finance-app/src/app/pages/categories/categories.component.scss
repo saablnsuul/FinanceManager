@@ -1,0 +1,10 @@
+
+    .categories-layout { display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+    .tree-card { min-height: 400px; }
+    .side-forms { display: flex; flex-direction: column; gap: 16px; }
+    .cat-form { display: flex; flex-direction: column; gap: 8px; padding: 8px 0; }
+    .cat-label { margin: 0 8px; flex: 1; }
+    .budget-chip { font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 12px; }
+    .delete-btn { opacity: 0; transition: opacity 0.15s; }
+    .mat-tree-node:hover .delete-btn, .mat-nested-tree-node:hover .delete-btn { opacity: 1; }
+    .hidden { display: none; }

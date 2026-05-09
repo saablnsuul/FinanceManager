@@ -10,87 +10,19 @@ import { TransactionService } from '../../core/services/transaction.service';
 import { CategoryService } from '../../core/services/category.service';
 import { FilterBarComponent } from '../../shared/filter-bar/filter-bar.component';
 import { TransactionFormComponent } from '../../shared/transaction-form/transaction-form.component';
-
+import { CommonModule, DecimalPipe } from '@angular/common';
 @Component({
   selector: 'app-transactions',
   standalone: true,
   imports: [
+    CommonModule, DecimalPipe,
     AsyncPipe, DatePipe, NgClass,
     MatCardModule, MatTableModule, MatIconModule,
     MatButtonModule, MatDialogModule, MatChipsModule,
     FilterBarComponent,
   ],
-  template: `
-    <div class="page-header">
-      <h2>Transactions</h2>
-      <button mat-raised-button color="primary" (click)="openForm()">
-        <mat-icon>add</mat-icon> Add Transaction
-      </button>
-    </div>
-
-    <app-filter-bar />
-
-    <mat-card>
-      <table mat-table [dataSource]="(transactions$ | async) ?? []" class="full-table">
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Type</th>
-          <td mat-cell *matCellDef="let row">
-            <mat-icon [ngClass]="row.type">
-              {{ row.type === 'income' ? 'arrow_upward' : 'arrow_downward' }}
-            </mat-icon>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let row">{{ row.date | date:'dd MMM yyyy' }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef>Category</th>
-          <td mat-cell *matCellDef="let row">
-            <mat-chip>{{ getCategoryName(row.categoryId) }}</mat-chip>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>Description</th>
-          <td mat-cell *matCellDef="let row">{{ row.description || '—' }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef>Amount</th>
-          <td mat-cell *matCellDef="let row" [ngClass]="row.type">
-            {{ row.type === 'income' ? '+' : '-' }}${{ row.amount | number:'1.2-2' }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-icon-button color="warn" (click)="remove(row.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-      </table>
-
-      @if ((transactions$ | async)?.length === 0) {
-        <p class="empty">No transactions found. Try changing the filters.</p>
-      }
-    </mat-card>
-  `,
-  styles: [`
-    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .page-header h2 { margin: 0; }
-    .full-table { width: 100%; }
-    .income { color: #43a047; }
-    .expense { color: #e53935; }
-    .empty { text-align: center; color: rgba(0,0,0,0.54); padding: 32px; }
-  `],
+  templateUrl: './transactions.component.html',
+  styleUrls: [ './transactions.component.scss' ],
 })
 export class TransactionsComponent {
   private txService = inject(TransactionService);

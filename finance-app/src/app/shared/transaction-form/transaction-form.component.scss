@@ -1,0 +1,4 @@
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
+    .type-toggle { grid-column: 1 / -1; display: flex; gap: 16px; }
+    .full-width { grid-column: 1 / -1; }

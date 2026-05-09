@@ -1,6 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { AppComponent } from './app/app.component';
+import 'zone.js'; // Это маст-хэв, чтобы не было ошибок в браузере
 
-bootstrapApplication(App, appConfig)
+bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));

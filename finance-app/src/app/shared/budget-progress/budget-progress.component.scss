@@ -1,0 +1,13 @@
+
+    .budget-list { display: flex; flex-direction: column; gap: 16px; }
+    .budget-item { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .budget-item:last-child { border-bottom: none; }
+    .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .cat-name { font-weight: 500; font-size: 14px; }
+    .amounts { font-size: 13px; color: rgba(0,0,0,0.54); }
+    .spent.danger { color: #e53935; font-weight: 600; }
+    .budget-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 12px; }
+    .warn-text { display: flex; align-items: center; gap: 2px; color: #e53935; }
+    .ok-text { color: rgba(0,0,0,0.54); }
+    .pct { font-weight: 500; }
+    .empty-state { color: rgba(0,0,0,0.54); font-size: 14px; text-align: center; padding: 24px 0; }

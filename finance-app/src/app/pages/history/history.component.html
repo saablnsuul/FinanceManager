@@ -1,0 +1,52 @@
+
+    <h2>Transaction History</h2>
+    <app-filter-bar />
+
+    <mat-card style="margin-bottom: 24px; padding: 16px;">
+      <mat-card-title>Income vs Expenses by Month</mat-card-title>
+      @if (chartData$ | async; as chartData) {
+        <ngx-charts-bar-vertical-2d
+          [results]="chartData"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [groupPadding]="8"
+          [barPadding]="2"
+          scheme="vivid"
+          style="height: 280px; display: block;">
+        </ngx-charts-bar-vertical-2d>
+      }
+    </mat-card>
+
+    <mat-card>
+      <table mat-table [dataSource]="(transactions$ | async) ?? []" class="history-table">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let row">{{ row.date | date:'dd.MM.yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-chip [color]="row.type === 'income' ? 'primary' : 'warn'" selected>
+              {{ row.type }}
+            </mat-chip>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let row">{{ getCategoryName(row.categoryId) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let row">{{ row.description || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let row" [style.color]="row.type === 'income' ? '#43a047' : '#e53935'">
+            {{ row.type === 'income' ? '+' : '-' }}${{ row.amount | number:'1.2-2' }}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      </table>
+    </mat-card>

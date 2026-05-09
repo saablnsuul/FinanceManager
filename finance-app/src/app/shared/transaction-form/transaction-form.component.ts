@@ -8,6 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { CategoryService } from '../../core/services/category.service';
+import { CommonModule, AsyncPipe } from '@angular/common';
 
 function positiveAmountValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
@@ -27,6 +28,8 @@ function futureDateValidator(control: AbstractControl): ValidationErrors | null 
   selector: 'app-transaction-form',
   standalone: true,
   imports: [
+    CommonModule,
+    AsyncPipe,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -36,58 +39,8 @@ function futureDateValidator(control: AbstractControl): ValidationErrors | null 
     MatButtonModule,
     MatRadioModule,
   ],
-  template: `
-    <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
-      <mat-radio-group formControlName="type" class="type-toggle">
-        <mat-radio-button value="income">Income</mat-radio-button>
-        <mat-radio-button value="expense">Expense</mat-radio-button>
-      </mat-radio-group>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Amount</mat-label>
-        <input matInput type="number" formControlName="amount" />
-        @if (form.get('amount')?.hasError('notPositive')) {
-          <mat-error>Amount must be greater than 0</mat-error>
-        }
-        @if (form.get('amount')?.hasError('required')) {
-          <mat-error>Amount is required</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Category</mat-label>
-        <mat-select formControlName="categoryId">
-          @for (cat of categories$ | async; track cat.id) {
-            <mat-option [value]="cat.id">{{ cat.name }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="date" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker" />
-        <mat-datepicker #picker />
-        @if (form.get('date')?.hasError('futureDate')) {
-          <mat-error>Cannot set a future date</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description" rows="2" />
-      </mat-form-field>
-
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-        Add Transaction
-      </button>
-    </form>
-  `,
-  styles: [`
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
-    .type-toggle { grid-column: 1 / -1; display: flex; gap: 16px; }
-    .full-width { grid-column: 1 / -1; }
-  `],
+  templateUrl: './transaction-form.component.html',
+  styleUrls: ['./transaction-form.component.scss'],
 })
 export class TransactionFormComponent {
   submitted = output<any>();
